@@ -10,4 +10,4 @@ startDamageOfEnemy=10
 startRewardOfEnemy=15
 
 startDamageAttackOfTower=30
-startSpeedOfShootOfTower=0,5(выстрелов в секунду)
+startSpeedOfShootOfTower=0,5(Shoots per second)
