@@ -30,7 +30,7 @@ public class Manager : Loader<Manager>
     private int healthOfBase = 0;
     private int totalGold = 0;
     private int escapedEnemies = 0;
-    private int numOfWave = 1;
+    private int numOfWave = 0;
     private int maxNewEnemiesOnWave = 3;
 
     private int valueUpgradeOfEnemyHealth = 10;

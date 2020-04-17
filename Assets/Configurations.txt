@@ -3,7 +3,7 @@ delayBetweenWaves=5
 CostOfUpgradeTower=300
 maxNewEnemiesOnNextWave=3
 costOfBuyTower=100
-startGold=100
+startGold=200
 
 startHealthOfEnemy=100
 startDamageOfEnemy=10
