@@ -1,0 +1,13 @@
+HealthOfBase=30
+delayBetweenWaves=5
+CostOfUpgradeTower=300
+maxNewEnemiesOnNextWave=3
+costOfBuyTower=100
+startGold=100
+
+startHealthOfEnemy=100
+startDamageOfEnemy=10
+startRewardOfEnemy=15
+
+startDamageAttackOfTower=30
+startSpeedOfShootOfTower=0,5(выстрелов в секунду)
