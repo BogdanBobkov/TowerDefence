@@ -51,8 +51,7 @@ public class CannonControl : MonoBehaviour
                 {
                     Vector3 targetDirection = targetEnemy.transform.position - transform.position;
                     Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, Time.deltaTime * speedOfRotation, 0.0f);
-                    transform.rotation = Quaternion.LookRotation(newDirection);
-                    transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, -transform.localEulerAngles.z);
+                    transform.rotation = Quaternion.LookRotation(newDirection, transform.parent.transform.up);
                 }
             }
         }

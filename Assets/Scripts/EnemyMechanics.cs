@@ -72,11 +72,7 @@ public class EnemyMechanics : MonoBehaviour
     {
         Vector3 targetDirection = point - transform.position;
         Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, Time.deltaTime * speedOfRotation, 0.0f);
-        transform.rotation = Quaternion.LookRotation(newDirection);
-        float rotation = transform.eulerAngles.z;
-        if (transform.position.x > point.x)
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 90);
-        else transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, -90);
+        transform.rotation = Quaternion.LookRotation(newDirection, transform.up);
         transform.position += transform.forward * Time.deltaTime * speedOfMove;
     }
     private void OnTriggerEnter(Collider collision)
