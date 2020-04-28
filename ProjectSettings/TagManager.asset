@@ -11,7 +11,7 @@ TagManager:
   - Enemy
   - TowerButton
   - InfoButton
-  - Manager
+  - LevelManager
   layers:
   - Default
   - TransparentFX

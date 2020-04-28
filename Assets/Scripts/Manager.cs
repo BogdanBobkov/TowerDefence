@@ -7,6 +7,13 @@ using UnityEngine.SceneManagement;
 
 public class Manager : Loader<Manager>
 {
+    public enum gameStatus
+    {
+        gameOver, play
+    }
+
+    public gameStatus currentState = gameStatus.play;
+
     private List<GameObject> enemies = new List<GameObject>();
     private List<GameObject> towers = new List<GameObject>();
 
@@ -23,9 +30,6 @@ public class Manager : Loader<Manager>
     [SerializeField] private Text infoCostText;
 
     public static int sumOfKilledEnemies = 0;
-
-    private int costOfTower = 0;
-    private int costOfUpgradeTower = 0;
 
     private int healthOfBase = 0;
     private int totalGold = 0;
@@ -53,7 +57,7 @@ public class Manager : Loader<Manager>
 
     private void Update()
     {
-        if (healthOfBase > 0)
+        if (currentState == gameStatus.play)
         {
             if (counterWave > 0f)
             {
@@ -75,32 +79,6 @@ public class Manager : Loader<Manager>
 
     public List<GameObject> Enemies { get => enemies; }
 
-    public int CostOfTower
-    {
-        set
-        {
-            costOfTower = value;
-            infoCostText.text = "Cost of buying = " + costOfTower.ToString();
-        }
-        get
-        {
-            return costOfTower;
-        }
-    }
-
-    public int CostOfUpgradeTower
-    {
-        set
-        {
-            costOfUpgradeTower = value;
-            infoUpgradeText.text = "Cost of upgrading = " + costOfUpgradeTower.ToString();
-        }
-        get
-        {
-            return costOfUpgradeTower;
-        }
-    }
-
     public int HealthOfBase
     {
         set
@@ -109,7 +87,7 @@ public class Manager : Loader<Manager>
             healthText.text = healthOfBase.ToString();
             if(healthOfBase <= 0)
             {
-                SceneManager.LoadScene(1);
+                endCurrentLevel();
             }
         }
         get
@@ -151,6 +129,13 @@ public class Manager : Loader<Manager>
         }
     }
 
+    public void endCurrentLevel()
+    {
+        currentState = gameStatus.gameOver;
+
+        SceneManager.LoadScene(1);
+    }
+
     public void registerEnemy(GameObject enemy)
     {
         enemies.Add(enemy);
@@ -164,7 +149,7 @@ public class Manager : Loader<Manager>
 
     public void changeHealthOfBase(int change)
     {
-        Instance.HealthOfBase += change;
+        HealthOfBase += change;
     }
 
     public void addGold(int gold)
@@ -179,7 +164,7 @@ public class Manager : Loader<Manager>
 
     public void SetTower()
     {
-        if (TotalGold >= costOfTower)
+        if (TotalGold >= tower.GetComponent<TowerMechanics>().CostOfTower)
         {
             GameObject newTower = Instantiate(tower);
             towers.Add(newTower);
@@ -235,7 +220,8 @@ public class Manager : Loader<Manager>
                     }
                 case "costOfBuyTower":
                     {
-                        CostOfTower = (int)(map[element]);
+                        tower.GetComponent<TowerMechanics>().CostOfTower = (int)(map[element]);
+                        infoCostText.text = "Cost of buying = " + map[element].ToString();
                         break;
                     }
                 case "startGold":
@@ -265,7 +251,8 @@ public class Manager : Loader<Manager>
                     }
                 case "CostOfUpgradeTower":
                     {
-                        CostOfUpgradeTower = (int)(map[element]);
+                        tower.GetComponent<TowerMechanics>().CostOfUpgradeTower = (int)(map[element]);
+                        infoUpgradeText.text = "Cost of upgrading = " + map[element].ToString();
                         break;
                     }
                 case "startDamageAttackOfTower":

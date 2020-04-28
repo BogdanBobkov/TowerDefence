@@ -15,15 +15,15 @@ public class EnemyMechanics : MonoBehaviour
     private float speedOfMove = 7f;
 
     private Transform[] points;
-    private GameObject finish;
+    private Transform finish;
 
     void Start()
     {
         points = Manager.Instance.points;
-        finish = GameObject.FindGameObjectWithTag("End");
+        finish = GameObject.FindGameObjectWithTag("End").transform;
         Manager.Instance.registerEnemy(this.gameObject);
     }
-    // Update is called once per frame
+
     void Update()
     {
         if (health <= 0)
@@ -40,7 +40,7 @@ public class EnemyMechanics : MonoBehaviour
         }
         if (points != null)
         {
-            moveToPoint(target == points.Length ? finish.transform.position : points[target].transform.position);
+            moveToPoint(target == points.Length ? finish.position : points[target].position);
         }
     }
 
@@ -77,7 +77,7 @@ public class EnemyMechanics : MonoBehaviour
     }
     private void OnTriggerEnter(Collider collision)
     {
-        if (target < points.Length && collision.transform.position == points[target].transform.position)
+        if (target < points.Length && collision.transform.position == points[target].position)
         {
             ++target;
         }

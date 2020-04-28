@@ -6,22 +6,28 @@ using UnityEngine.EventSystems;
 
 public class TowerMechanics : MonoBehaviour
 {
-   [SerializeField] private GameObject cannon;
+    [SerializeField] private GameObject cannon;
+
+    [SerializeField] private int costOfTower = 0;
+    [SerializeField] private int costOfUpgradeTower = 0;
+
+    private Color cannonColor;
 
     void Start()
     {
-        cannon.GetComponent<Renderer>().material.color = Color.red;
+        cannonColor = cannon.GetComponent<Renderer>().material.color;
+        cannonColor = Color.red;
         followMouse();
     }
 
     void Update()
     {
-        if (cannon.GetComponent<Renderer>().material.color != Color.white)
+        if (cannonColor != Color.white)
         {
             followMouse();
             if (Input.GetMouseButtonDown(0))
             {
-                if (cannon.GetComponent<Renderer>().material.color == Color.green)
+                if (cannonColor == Color.green)
                 {
                     setPlaceTower();
                 }
@@ -36,7 +42,7 @@ public class TowerMechanics : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (Manager.Instance.TotalGold >= Manager.Instance.CostOfUpgradeTower && cannon.GetComponent<Renderer>().material.color == Color.white)
+        if (Manager.Instance.TotalGold >= costOfUpgradeTower && cannonColor == Color.white)
         {
             upgradeCharacteristics();
         }
@@ -44,17 +50,17 @@ public class TowerMechanics : MonoBehaviour
 
     private void setPlaceTower()
     {
-        cannon.GetComponent<Renderer>().material.color = Color.white;
+        cannonColor = Color.white;
         cannon.GetComponent<CannonControl>().enabled = true;
         GameObject.FindGameObjectWithTag("TowerButton").GetComponent<Button>().enabled = true;
-        Manager.Instance.substractGold(Manager.Instance.CostOfTower);
+        Manager.Instance.substractGold(costOfTower);
     }
 
     private void upgradeCharacteristics()
     {
         setDamageOfCannon(cannon.GetComponent<CannonControl>().Damage + Manager.Instance.ValueUpgradeOfTowerDamage);
         setSpeedOfShootOfCannon(cannon.GetComponent<CannonControl>().SpeedOfShoot + Manager.Instance.ValueUpgradeOfTowerSpeedOfShoot);
-        Manager.Instance.substractGold(Manager.Instance.CostOfUpgradeTower);
+        Manager.Instance.substractGold(costOfUpgradeTower);
     }
 
     public void setDamageOfCannon(int damage)
@@ -67,6 +73,9 @@ public class TowerMechanics : MonoBehaviour
         cannon.GetComponent<CannonControl>().SpeedOfShoot = speed;
     }
 
+    public int CostOfTower { get => costOfTower; set => costOfTower = value; }
+    public int CostOfUpgradeTower { get => costOfUpgradeTower; set => costOfUpgradeTower = value; }
+
     private void followMouse()
     {
         float towerToCameraDistance = transform.position.z - Camera.main.transform.position.z;
@@ -77,11 +86,11 @@ public class TowerMechanics : MonoBehaviour
 
     private void OnTriggerStay(Collider collision)
     {
-        if(cannon.GetComponent<Renderer>().material.color != Color.white) cannon.GetComponent<Renderer>().material.color = Color.red;
+        if(cannonColor != Color.white) cannonColor = Color.red;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (cannon.GetComponent<Renderer>().material.color != Color.white) cannon.GetComponent<Renderer>().material.color = Color.green;
+        if (cannonColor != Color.white) cannonColor = Color.green;
     }
 }
